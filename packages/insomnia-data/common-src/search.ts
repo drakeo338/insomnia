@@ -17,7 +17,7 @@ export function fuzzyMatch(
 }
 
 export function fuzzyMatchAll(searchString: string, allText: string[], options: FuzzyMatchOptions = {}) {
-  if (typeof searchString !== 'string' || !searchString.trim()) {
+  if (!searchString || !searchString.trim()) {
     return null;
   }
 
@@ -67,6 +67,6 @@ export function fuzzyMatchAll(searchString: string, allText: string[], options: 
   return {
     score: maxScore,
     indexes,
-    target: allText.filter(t => typeof t === 'string').join(' '),
+    target: allText.join(' '),
   };
 }
