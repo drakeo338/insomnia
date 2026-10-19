@@ -17,7 +17,7 @@ export function fuzzyMatch(
 }
 
 export function fuzzyMatchAll(searchString: string, allText: string[], options: FuzzyMatchOptions = {}) {
-  if (!searchString || !searchString.trim()) {
+  if (typeof searchString !== 'string' || !searchString.trim()) {
     return null;
   }
 
@@ -30,7 +30,7 @@ export function fuzzyMatchAll(searchString: string, allText: string[], options: 
   for (const term of terms) {
     let matchedTerm = false;
 
-    for (const text of allText.filter(t => t && t.trim())) {
+    for (const text of allText.filter(t => typeof t === 'string' && t.trim())) {
       const result = fuzzysort.single(term, text);
 
       if (!result) {
@@ -67,6 +67,6 @@ export function fuzzyMatchAll(searchString: string, allText: string[], options: 
   return {
     score: maxScore,
     indexes,
-    target: allText.join(' '),
+    target: allText.filter(t => typeof t === 'string').join(' '),
   };
 }

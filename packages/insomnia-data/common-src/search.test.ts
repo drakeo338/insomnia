@@ -24,6 +24,20 @@ describe('fuzzyMatch()', () => {
 });
 
 describe('fuzzyMatchAll()', () => {
+  it('ignores non-string entries instead of throwing', () => {
+    // e.g. a `description` that is an object or number
+    // @ts-expect-error
+    expect(fuzzyMatchAll('test', [{ text: 'x' }, 42, null, 'testing'])).toEqual({
+      score: -3,
+      indexes: [0, 1, 2, 3],
+      target: 'testing',
+    });
+    // @ts-expect-error
+    expect(fuzzyMatchAll('test', [{ text: 'x' }, 42])).toEqual(null);
+    // @ts-expect-error
+    expect(fuzzyMatchAll(42, ['testing'])).toEqual(null);
+  });
+
   it('can get a positive fuzzy match on multiple fields', () => {
     // @ts-expect-error
     expect(fuzzyMatchAll('', [undefined])).toEqual(null);
